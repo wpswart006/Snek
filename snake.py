@@ -1,5 +1,5 @@
 from enum import Enum
-from board import Board
+import config
 from tail import Tail
 
 class DIRECTION(Enum):

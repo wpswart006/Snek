@@ -23,15 +23,18 @@ class Board:
     def update(self,snake,food):
       if(snake.pos == food.pos):
         snake.grow()
-        food.__init__(self.tiles)
+        with open ('out.txt', 'a') as f:
+            print(snake.length,":\n",self.tiles,file = f)
+        food.__init__()
+          
       self.tiles = np.zeros(self.shape)
       
       # print("update")
       # print(snake.pos)
-      
-      for k in range (snake.length):
-        self.tiles[snake.tail[k].pos[0],snake.tail[k].pos[1]] = 2
       self.tiles[food.pos[0],food.pos[1]] = 3
+      for k in snake.tail:
+        self.tiles[k.pos[0],k.pos[1]] = 2
+      
       self.tiles[snake.pos[0],snake.pos[1]] =1
       # print("Done Updating")
       # print(np.where(self.tiles==3))
