@@ -14,7 +14,7 @@ pygame.display.set_caption("My First Game")
 carryOn = True
 clock = pygame.time.Clock()
 
-s = Snake([2,2],[10,10])
+s = Snake([2,2],[25,25])
 f = Food()
 
 while carryOn:
