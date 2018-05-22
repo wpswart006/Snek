@@ -9,7 +9,7 @@ class Board():
 
     def __init__(self,shape):
 
-        self.block_size = 100
+        self.block_size = 10
         self.shape= shape
         self.tiles = np.zeros((shape[1],shape[0]))
         self.tiles[2,2] = 1 
@@ -94,10 +94,10 @@ class Snake():
         self.count +=1
         for t in self.tail:
             if self.pos == t.pos:
-                config.b.carry_on = False
+                self.die()
         for w in config.b.wall:
             if self.pos == w.pos:
-                config.b.carry_on = False
+                self.die()
         self.turn_allowed = True
 
     def turn_up(self):
@@ -126,6 +126,10 @@ class Snake():
 
     def hurry(self,amount = 0):
         self.count = config.b.fps -self.speed - amount
+
+    def die(self):
+        print(self.length)
+        config.b.carry_on = False
 
     def grow(self):
         if self.length == 0:
