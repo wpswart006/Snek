@@ -4,7 +4,7 @@ from stuff import Snake
 
 
 pygame.display.set_caption("Snek")
-s = Snake(pos = [2,2])
+s = Snake(pos = [2,2],snake_speed= config.snake_speed)
 while config.b.carry_on:
     for event in config.pygame.event.get():
         if event.type == config.pygame.QUIT:
@@ -23,6 +23,6 @@ while config.b.carry_on:
     config.b.draw()
     config.clock.tick(config.b.fps)
 
-
+print(s.length)
 pygame.quit()
 
