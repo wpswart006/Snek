@@ -1,10 +1,9 @@
 import pygame
-import config
-from stuff import Snake
+from stuff import Snake,Board,Food
 
 
 pygame.display.set_caption("Snek")
-s = Snake(pos = [2,2],snake_speed= config.snake_speed)
+
 while config.b.carry_on:
     for event in config.pygame.event.get():
         if event.type == config.pygame.QUIT:
@@ -24,4 +23,20 @@ while config.b.carry_on:
     config.clock.tick(config.b.fps)
 
 pygame.quit()
+
+
+class Game():
+    def __init__(self,display = True):
+        self.walls = [[0,0],[0,1],[0,2],[0,3]]
+        self.b = Board([10,10],block_size= 50)
+        self.f = Food()
+        self.snake_speed = 55
+        self.s = Snake(pos = [2,2],snake_speed= self.snake_speed)
+
+        start(display)
+
+    def start(self):
+        while self.b.carry_on:
+        # self.pygame = pygame.init() not sure yet
+
 
