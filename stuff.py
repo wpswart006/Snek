@@ -7,9 +7,9 @@ from enum import Enum
 
 class Board():
 
-    def __init__(self,shape):
+    def __init__(self,shape, block_size = 100):
 
-        self.block_size = 100
+        self.block_size = block_size
         self.shape= shape
         self.tiles = np.zeros((shape[1],shape[0]))
         self.tiles[2,2] = 1 
@@ -47,8 +47,8 @@ class DIRECTION(Enum):
 
 class Snake():
 
-    def __init__(self,pos = [3,3]):
-        self.speed = 50
+    def __init__(self,pos = [3,3],snake_speed = 55):
+        self.speed = snake_speed
         self.count = 0
         self.hook = [2,3]
         self.direction = DIRECTION.RIGHT
