@@ -23,6 +23,5 @@ while config.b.carry_on:
     config.b.draw()
     config.clock.tick(config.b.fps)
 
-print(s.length)
 pygame.quit()
 
