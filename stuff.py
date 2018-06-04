@@ -9,23 +9,8 @@ class Board():
 
     def __init__(self,shape, block_size = 100):
 
-<<<<<<< HEAD
-||||||| merged common ancestors
-<<<<<<<<< Temporary merge branch 1
-        self.block_size = 10
-||||||||| merged common ancestors
-        self.block_size = 100
-=========
-=======
 
->>>>>>> 4211f9b895351a2a146d3a86dcb4c69dcb581ee2
         self.block_size = block_size
-<<<<<<< HEAD
-        self.block_size = 100
-||||||| merged common ancestors
->>>>>>>>> Temporary merge branch 2
-=======
->>>>>>> 4211f9b895351a2a146d3a86dcb4c69dcb581ee2
         self.shape= shape
         self.tiles = np.zeros((shape[1],shape[0]))
         self.tiles[2,2] = 1 
