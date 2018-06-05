@@ -8,14 +8,14 @@ class Game():
         self.b = Board([10,10],block_size= 50)
         self.snake_speed = 55
         self.s = Snake(self.b,pos = [2,2],snake_speed= self.snake_speed)
-        self.f = None
+        # self.f = None
         self.clock = pygame.time.Clock()
         
         self.start(display)
 
     def start(self,display):
         pygame.display.set_caption("Snek")
-        self.f = Food(self.b.tiles)
+        # self.f = Food(self.b.tiles)
         while self.b.carry_on:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
