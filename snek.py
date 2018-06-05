@@ -10,6 +10,7 @@ class Game():
         self.s = Snake(self.b,pos = [2,2],snake_speed= self.snake_speed)
         self.f = None
         self.clock = pygame.time.Clock()
+        
         self.start(display)
 
     def start(self,display):
