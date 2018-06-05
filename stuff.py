@@ -1,9 +1,9 @@
 import numpy as np
-import config
 import pygame
 import random
 import numpy as np
 from enum import Enum
+import snek
 
 class Board():
 
@@ -19,6 +19,7 @@ class Board():
         self.carry_on = True
         self.fps = 60
         self.wall = []
+        self.f = Food(self.tiles)
     
     def add_walls(self,wall):   
         for w in wall:
@@ -39,6 +40,7 @@ class Board():
                 elif self.tiles[x,y] == 4:
                     pygame.draw.rect(self.screen, [255,255,255], [x*self.block_size,y*self.block_size,self.block_size,self.block_size],0)
         pygame.display.flip()
+        
 
 class DIRECTION(Enum):
     UP = 1
@@ -48,8 +50,9 @@ class DIRECTION(Enum):
 
 class Snake():
 
-    def __init__(self,pos = [3,3],snake_speed = 55):
+    def __init__(self,board,pos = [3,3],snake_speed = 55):
         self.speed = snake_speed
+        self.b = board
         self.count = 0
         self.hook = [2,3]
         self.direction = DIRECTION.RIGHT
@@ -60,43 +63,43 @@ class Snake():
         
 
     def move(self):
-        if self.count == config.b.fps -self.speed:
+        if self.count == self.b.fps -self.speed:
             self.count = 0
             self.hook = self.pos.copy()
             if self.direction == DIRECTION.RIGHT:
-                if self.pos[1] == config.b.shape[1] -1:
+                if self.pos[1] == self.b.shape[1] -1:
                     self.pos[1] = 0
                 else:
                     self.pos[1] +=1
             elif self.direction == DIRECTION.UP:
                 if self.pos[0] == 0:
-                    self.pos[0] = config.b.shape[0]-1
+                    self.pos[0] = self.b.shape[0]-1
                 else:
                     self.pos[0] -=1
             elif self.direction == DIRECTION.LEFT:
                 if self.pos[1] == 0:
-                    self.pos[1] = config.b.shape[1]-1
+                    self.pos[1] = self.b.shape[1]-1
                 else:
                     self.pos[1] -=1
             elif self.direction == DIRECTION.DOWN:
-                if self.pos[0] == config.b.shape[0]-1:
+                if self.pos[0] == self.b.shape[0]-1:
                     self.pos[0] = 0
                 else:
                     self.pos[0] +=1
-            config.b.tiles[self.hook[1],self.hook[0]] = 0
-            config.b.tiles[self.pos[1],self.pos[0]] = 1
+            self.b.tiles[self.hook[1],self.hook[0]] = 0
+            self.b.tiles[self.pos[1],self.pos[0]] = 1
             for t in self.tail:
                 t.move()
-            if self.pos == config.f.pos:
+            if self.pos == self.b.f.pos:
                 self.grow()
-                config.f = Food()
+                self.b.f = Food(self.b.tiles)
 
 
         self.count +=1
         for t in self.tail:
             if self.pos == t.pos:
                 self.die()
-        for w in config.b.wall:
+        for w in self.b.wall:
             if self.pos == w.pos:
                 self.die()
         self.turn_allowed = True
@@ -126,17 +129,17 @@ class Snake():
             self.hurry()
 
     def hurry(self,amount = 0):
-        self.count = config.b.fps -self.speed - amount
+        self.count = self.b.fps -self.speed - amount
 
     def die(self):
         print(self.length)
-        config.b.carry_on = False
+        self.b.carry_on = False
 
     def grow(self):
         if self.length == 0:
-            self.tail.append(Tail(self))
+            self.tail.append(Tail(self,self.b.tiles))
         else:
-            self.tail.append(Tail(self.tail[self.length-1]))
+            self.tail.append(Tail(self.tail[self.length-1],self.b.tiles))
             # print(self.tail[self.length-1])
         self.length +=1
             
@@ -144,7 +147,8 @@ class Tail():
 
     hook = [None,None]
 
-    def __init__(self,parent):
+    def __init__(self,parent,tiles):
+        self.tiles = tiles
         self.parent = parent
         self.pos = parent.hook.copy()
 
@@ -152,20 +156,20 @@ class Tail():
         self.hook = self.pos.copy()
         self.pos = self.parent.hook.copy()
 
-        if  config.b.tiles[self.hook[1],self.hook[0]] ==2:
-            config.b.tiles[self.hook[1],self.hook[0]] = 0
-        config.b.tiles[self.pos[1],self.pos[0]] = 2
+        if  self.tiles[self.hook[1],self.hook[0]] ==2:
+            self.tiles[self.hook[1],self.hook[0]] = 0
+        self.tiles[self.pos[1],self.pos[0]] = 2
 
 class Food():
 
-    def __init__(self):
+    def __init__(self,tiles):
         # print( config.b.tiles)
-        avail = np.where(config.b.tiles == 0)
+        avail = np.where(tiles == 0)
         # print(avail)
         x =random.randint(1,avail[0].size)-1
         # y = random.randint(1,avail[1].size)-1 SODAT JY KAN LEER UIT JOU FOUTE
         self.pos = [avail[1][x],avail[0][x]]
-        config.b.tiles[self.pos[1],self.pos[0]] = 3
+        tiles[self.pos[1],self.pos[0]] = 3
         # print(self.pos)
         # print( config.b.tiles)
         # print("\n")
